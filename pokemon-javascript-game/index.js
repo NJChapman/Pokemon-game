@@ -8,7 +8,6 @@
 // exp bar
 
 
-
 /// oop plan 
 // classes: pokemonpart (stats ), pokemon, animate loop
 //entity, NPC, player,
@@ -18,8 +17,9 @@
 //battlesprite
 
 let pokemon1 = "Emby"
-// let pokemon2 = "Draggle"
-let pokemon2 = "Blooper"
+let pokemon2
+let pokemonPool = ["Pignon", "Blooper","Draggle","Jelly"]
+// let pokemonPool = ["Blooper"]
 
 
 const canvas = document.querySelector('canvas')
@@ -42,7 +42,7 @@ const charactersMap = []
 for (let i = 0; i < charactersMapData.length; i += 140) {
   charactersMap.push(charactersMapData.slice(i, 140 + i))
 }
-console.log(charactersMap)
+// console.log(charactersMap)
 
 const boundaries = []
 const offset = {
@@ -265,8 +265,8 @@ function animate() {
         //Math.random() < 0.01 is a good value
       ) {
         // deactivate current animation loop
+        pokemon2 = pokemonPool[Math.random() * pokemonPool.length>>0]
         window.cancelAnimationFrame(animationId)
-
         audio.Map.stop()
         audio.initBattle.play()
         audio.battle.play()
@@ -525,6 +525,7 @@ function gainExperiencePoints(expPoints) {
 
 // when the player's pokemon takes damage, update the health property
 function takeDamage(damagePoints) {
+  console.log("take damage function triggered")
   pokemonStats.health -= damagePoints;
   // save the updated pokemon statistics to local storage
   savePokemonStats();

@@ -76,7 +76,7 @@
         padding: 12px;
       "
     >
-      <h1 style="font-size: 16px">Draggle</h1>
+      <h1 id="EnemyBox" style="font-size: 16px">Draggle</h1>
       <div style="position: relative">
         <div
           style="height: 5px; background-color: #ccc; margin-top: 10px"
@@ -107,7 +107,7 @@
         padding: 12px;
       "
     >
-      <h1 style="font-size: 16px">Emby</h1>
+      <h1 id="PlayerBox" style="font-size: 16px">Emby</h1>
       <div style="position: relative">
         <div
           style="height: 5px; background-color: #ccc; margin-top: 10px"
@@ -152,26 +152,34 @@
           cursor: pointer;
         "
       >
-        sdkfjlsdajl
       </div>
       <div
         id="attacksBox"
         style="
           width: 66.66%;
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-        "
-      ></div>
-      <div
+          grid-template-columns: repeat(4, 1fr);
+        ">Subheading</div>
+      <!-- <div id="attacksoverlay"
         style="
-          display: flex;
+          width: 66.33%;
+          display: none;
           align-items: center;
-          justify-content: center;
+          justify-content: center
+      "></div> -->
+      <div
+      id="battlemenubox"
+        style="
+          display: grid;
           width: 33.33%;
+          grid-template-columns: repeat(2, 2fr);
           border-left: 4px black solid;
         "
       >
-        <h1 id="attackType" style="font-size: 16px">Attack Type</h1>
+        <Button id="Fight" style="font-size: 16px; display: grid; align-content: center;justify-content: center;">Fight</Button>
+        <Button id="Items" style="font-size: 16px; display: grid; align-content: center;justify-content: center;">Items</Button>
+        <Button id="PokemonParty" style="font-size: 16px; display: grid; align-content: center;justify-content: center;">Pokemon</Button>
+        <Button id="Run" style="font-size: 16px; display: grid; align-content: center;justify-content: center;">Run</Button>
       </div>
     </div>
   </div>
