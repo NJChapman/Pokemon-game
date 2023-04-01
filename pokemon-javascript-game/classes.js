@@ -7,25 +7,27 @@ class Sprite {
     sprite4x4 = false,
     animate = false,
     rotation = 0,
-    scale = 1
+    scale = 1,
   }) {
     this.position = position
     this.image = new Image()
     this.sprite4x4 = sprite4x4
     this.frames = { ...frames, val: 0, elapsed: 0 }
+    this.scale = scale
     this.image.onload = () => {
-      this.width = (this.image.width / this.frames.max) * scale
-      this.height = this.sprite4x4 ? (this.image.width / this.frames.max) * scale : this.image.height * scale
+      this.width = (this.image.width / this.frames.max) * this.scale
+      this.height = this.sprite4x4 ? (this.image.height / this.frames.max) * this.scale : this.image.height * this.scale
     }
     this.image.src = image.src
     this.animate = animate
     this.sprites = sprites
     this.opacity = 1
     this.rotation = rotation
-    this.scale = scale
+
   }
 
   draw() {
+    c.imageSmoothingEnabled = false;
     c.save()
     c.translate(
       this.position.x + this.width / 2,
@@ -40,11 +42,11 @@ class Sprite {
   
     const crop = {
       position: {
-        x: this.frames.val * (this.width / this.scale),
-        y: this.sprite4x4 ? this.frames.val * (this.height / this.scale) : 0
+        x: this.sprite4x4 ? 0 : this.frames.val * (this.width / this.scale),
+        y: this.sprite4x4 ? this.frames.val * (this.height / this.scale) + 0 : 0
       },
       width: this.image.width / this.frames.max,
-      height: this.sprite4x4 ? this.image.height / this.frames.max : this.image.height
+      height: this.sprite4x4 ? this.image.height / this.frames.max  : this.image.height
     }
 
     const image = {
@@ -55,15 +57,6 @@ class Sprite {
       width: this.image.width / this.frames.max,
       height: this.sprite4x4 ? this.image.height / this.frames.max : this.image.height
     }
-    console.log(
-      "max frames " + this.frames.max,
-      "4x4? " + this.sprite4x4,
-      "width "  + image.width * this.scale, 
-      "height "  + image.height * this.scale, 
-      "crop position "  + crop.position.x,
-      "crop position "  + crop.position.y,
-      "crop width "  + crop.width,
-      "crop height "  + crop.height,)
 
     c.drawImage(
       this.image,
@@ -76,7 +69,7 @@ class Sprite {
       image.width * this.scale,
       image.height * this.scale
     )
-
+      console.log(this.scale)
     c.restore()
 
     if (!this.animate) return
@@ -105,7 +98,8 @@ class Monster extends Sprite {
     name,
     attacks,
     exp,
-    enemyName
+    enemyName,
+    scale
   }) {
     super({
       sprite4x4,
@@ -114,7 +108,8 @@ class Monster extends Sprite {
       frames,
       sprites,
       animate,
-      rotation
+      rotation,
+      scale,
     })
     this.health = 100
     this.isEnemy = isEnemy
@@ -124,6 +119,7 @@ class Monster extends Sprite {
     this.enemyName = enemyName
   }
 
+  
   faint() {
     document.querySelector('#dialogueBox').innerHTML = this.name + ' fainted!'
     gsap.to(this.position, {
@@ -133,16 +129,17 @@ class Monster extends Sprite {
       opacity: 0
     })
     audio.battle.stop()
-    audio.victory.play()
   }
 
   win() {
+    audio.victory.play()
     console.log(this.name + " gained 51 exp ")
-    document.querySelector('#dialogueBox').innerHTML = this.enemyName + ' fainted!'
+    // document.querySelector('#dialogueBox').innerHTML = this.enemyName + ' fainted!'
     document.querySelector('#dialogueBox').style.display = 'block'
     document.querySelector('#dialogueBox').innerHTML =
       this.name + ' gained 50 exp '
     gainExperiencePoints(50)
+    audio.victory.stop()
   }
 
   attack({ attack, recipient, renderedSprites }) {
@@ -151,13 +148,13 @@ class Monster extends Sprite {
       this.name + ' used ' + attack.name
 
     let healthBar = '#enemyHealthBar'
-    if (this.isEnemy) healthBar = '#playerHealthBar'
-
+    if (recipient==p1) healthBar = '#playerHealthBar'
+    console.log(recipient==p1)
     let rotation = 1
-    if (this.isEnemy) rotation = -2.2
+    if (recipient==p1) rotation = -2.2
 
     recipient.health -= attack.damage
-    if (this.isEnemy) pokemonStats.health -= attack.damage
+    if (recipient==p1) pokemonStats.health -= attack.damage
     console.log(pokemonStats.health)
 
     switch (attack.name) {

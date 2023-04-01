@@ -16,12 +16,14 @@ let queue
 
 function initBattle(P1,P2) {
   document.querySelector('#userInterface').style.display = 'block'
+  document.querySelector('#PlayerBox').innerHTML = P1
+  document.querySelector('#EnemyBox').innerHTML = P2
   document.querySelector('#dialogueBox').style.display = 'none'
   document.querySelector('#enemyHealthBar').style.width = '100%'
   document.querySelector('#playerHealthBar').style.width = '100%'
   document.querySelector('#attacksBox').replaceChildren()
-  P1 = P1
-  P2 = P2
+  // P1 = P1
+  // P2 = P2
 
   p2 = new Monster(monsters[P2])
   p1 = new Monster(monsters[P1])
@@ -111,8 +113,9 @@ function initBattle(P1,P2) {
 
     button.addEventListener('mouseenter', (e) => {
       const selectedAttack = attacks[e.currentTarget.innerHTML]
-      document.querySelector('#attackType').innerHTML = selectedAttack.type
-      document.querySelector('#attackType').style.color = selectedAttack.color
+      e.currentTarget.overlay.style.display = "block";
+      // document.querySelector('#attackType').innerHTML = selectedAttack.type
+      // document.querySelector('#attackType').style.color = selectedAttack.color
     })
   })
 }
@@ -120,11 +123,12 @@ function initBattle(P1,P2) {
 function animateBattle() {
   battleAnimationId = window.requestAnimationFrame(animateBattle)
   battleBackground.draw()
-  console.log(p2.sprite4x4)
-  // console.log(battleAnimationId)
-  renderedSprites.forEach((sprite) => {
-    sprite.draw()
-  })
+  // renderedSprites.forEach((sprite) => {
+  //   sprite.draw()
+  // })
+  p1.draw()
+  p2.draw()
+
 }
 
 animate()
